@@ -1,6 +1,16 @@
-$dir = 'C:\Users\jblondeau\Desktop\HabPhotos\FlaKeys\2011\'
+# With a directory of photos named as follows...
+# YEAR_Region_SiteId_Stn_photoNum.jpg (2014_FK_00408_S1_1.jpg)
+# ...this script will create dir for each siteid_stn and move all photos to correct dir.  
+# Then re-number all the photos in each dir starting with 1
 
+#  Set the directory to phots
+$dir = 'path\to\photos\'
+
+#  create epmpty array
 $a = @()
+
+#  loop through directory and add the site name to the array and create directory of site
+#  if does not exists
 gci $dir | % {
 	$s = $_.Name.substring(8,8)
 	if( -not ($a -contains $s)) {
@@ -15,7 +25,7 @@ gci $dir | % {
 }
 
 
-
+#  loop through site array and mvoe all pictures to correct directory
 foreach ($site in $a) {
 	
 	
@@ -27,6 +37,7 @@ foreach ($site in $a) {
 }
 
 
+#  Set directories to loop through
 $dirs = dir $dir -Recurse | Where { $_.psIsContainer -eq $true }
 
   Foreach ($dir In $dirs) 
@@ -34,7 +45,7 @@ $dirs = dir $dir -Recurse | Where { $_.psIsContainer -eq $true }
     # Set default value for addition to file name 
     $i = 1 
 
-    # Search for the files set in the filter (*.jpg in this case) 
+    # Search for the files set in the filter (*.jpg in this case)
     $files = Get-ChildItem -Path $dir.fullname -Recurse
  
     Foreach ($file In $files) 
